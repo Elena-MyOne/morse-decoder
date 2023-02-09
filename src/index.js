@@ -39,6 +39,25 @@ const MORSE_TABLE = {
 
 function decode(expr) {
     // write your solution here
+    const letterLength = 10;
+    const space = '**********';
+    const encodedString = [];
+    let result = [];
+
+    for (let i = 0; i < expr.length; i += letterLength) {
+        let letter = expr.slice(i, i + letterLength);
+        encodedString.push(letter);
+    }
+
+    for (let j = 0; j < encodedString.length; j += 1) {
+        let encodedValue = encodedString[j].replace(/10/g, '.').replace(/11/g, '-').replace(/00/g, '');
+        if (encodedValue === space) {
+            result.push(' ');
+        }
+        result.push(MORSE_TABLE[encodedValue]);
+    }
+
+  return result.join('');
 }
 
 module.exports = {
