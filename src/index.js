@@ -37,27 +37,38 @@ const MORSE_TABLE = {
     '-----':  '0',
 };
 
-function decode(expr) {
-    // write your solution here
-    const letterLength = 10;
-    const space = '**********';
-    const encodedString = [];
-    let result = [];
+const BINARY = {
+  '10': '.',
+  '11': '-',
+  '00': ''
+};
 
-    for (let i = 0; i < expr.length; i += letterLength) {
-        let letter = expr.slice(i, i + letterLength);
+const LETTER_LENGTH = 10;
+const SPACE  = '**********';
+
+function decode(expr) {
+    const encodedString = [];
+
+    for (let i = 0; i < expr.length; i += LETTER_LENGTH) {
+        let letter = expr.substr(i, LETTER_LENGTH);
         encodedString.push(letter);
     }
 
-    for (let j = 0; j < encodedString.length; j += 1) {
-        let encodedValue = encodedString[j].replace(/10/g, '.').replace(/11/g, '-').replace(/00/g, '');
-        if (encodedValue === space) {
-            result.push(' ');
-        }
-        result.push(MORSE_TABLE[encodedValue]);
-    }
+    function binaryMorse(str) {
+      return str
+          .match(/.{2}/g)
+          .map(pair => BINARY[pair])
+          .join('');
+  }
 
-  return result.join('');
+    const result = encodedString.map(item => {
+      if (item === SPACE) {
+          return ' ';
+      }
+      return MORSE_TABLE[binaryMorse(item)];
+  });
+
+    return result.join('');
 }
 
 module.exports = {
